@@ -1,6 +1,7 @@
-import { AfterViewInit, Component, ElementRef, Injector } from '@angular/core';
+import { AfterViewInit, Component, ElementRef } from '@angular/core';
 import * as angular from 'angular';
 import { TextUtilsService } from '../shared/text-utils.service';
+import { UpgradeUtilsService } from '../upgrade-utils/upgrade-utils.service';
 import { moduleName } from './route-3-angularjs.module';
 
 @Component({
@@ -12,14 +13,12 @@ import { moduleName } from './route-3-angularjs.module';
 export class Route3Component implements AfterViewInit {
   title = 'Route 3';
 
-  constructor(private elementRef: ElementRef, private injector: Injector) { }
+  constructor(private elementRef: ElementRef, private upgradeUtils: UpgradeUtilsService) { }
 
   ngAfterViewInit() {
     const angularjsRoot = this.elementRef.nativeElement.querySelector('[route-3-angularjs-root]');
-    const downgradedProviders = ['$provide', ($provide: angular.auto.IProvideService) => {
-      $provide.factory('textUtils', () => this.injector.get(TextUtilsService));
-    }];
-
-    angular.bootstrap(angularjsRoot, [moduleName, downgradedProviders]);
+    this.upgradeUtils.bootstrap(angularjsRoot, moduleName, {
+      textUtils: TextUtilsService,
+    });
   }
 }
