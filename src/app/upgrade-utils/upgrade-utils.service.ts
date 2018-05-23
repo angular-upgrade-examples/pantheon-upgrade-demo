@@ -1,4 +1,4 @@
-import { Injectable, InjectionToken, Injector, Type } from '@angular/core';
+import { Injectable, InjectionToken, Injector, NgZone, Type } from '@angular/core';
 import * as angular from 'angular';
 import { UpgradeUtilsModule } from './upgrade-utils.module';
 
@@ -10,7 +10,7 @@ export interface DowngradableProviders {
   providedIn: UpgradeUtilsModule,
 })
 export class UpgradeUtilsService {
-  constructor(private injector: Injector) { }
+  constructor(private injector: Injector, private ngZone: NgZone) { }
 
   bootstrap(root: HTMLElement, moduleName: string, providers: DowngradableProviders): void {
     const downgradedProviders = [
@@ -20,6 +20,6 @@ export class UpgradeUtilsService {
           $provide.factory(key, () => this.injector.get(providers[key]))),
     ];
 
-    angular.bootstrap(root, [moduleName, downgradedProviders]);
+    this.ngZone.runOutsideAngular(() => angular.bootstrap(root, [moduleName, downgradedProviders]));
   }
 }
