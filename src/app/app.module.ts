@@ -3,11 +3,13 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { LogViewerComponent } from './shared/log-viewer.component';
 import { PageNotFoundComponent } from './shared/page-not-found.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    LogViewerComponent,
     PageNotFoundComponent,
   ],
   imports: [

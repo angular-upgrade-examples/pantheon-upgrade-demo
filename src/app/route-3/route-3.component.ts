@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy } from '@angular/core';
 import * as angular from 'angular';
 import { Subject } from 'rxjs';
+import { LoggerService } from '../shared/logger.service';
 import { TextUtilsService } from '../shared/text-utils.service';
 import { UpgradeUtilsService } from '../upgrade-utils/upgrade-utils.service';
 import { moduleName } from './route-3-angularjs.module';
@@ -20,6 +21,7 @@ export class Route3Component implements AfterViewInit, OnDestroy {
   ngAfterViewInit() {
     const angularjsRoot = this.elementRef.nativeElement.querySelector('[route-3-angularjs-root]');
     const cleanUp = this.upgradeUtils.bootstrap(angularjsRoot, moduleName, {
+      logger: LoggerService,
       textUtils: TextUtilsService,
     });
 
