@@ -1,5 +1,6 @@
-import { AfterViewInit, Component, ElementRef } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy } from '@angular/core';
 import * as angular from 'angular';
+import { Subject } from 'rxjs';
 import { TextUtilsService } from '../shared/text-utils.service';
 import { UpgradeUtilsService } from '../upgrade-utils/upgrade-utils.service';
 import { moduleName } from './route-4-angularjs.module';
@@ -10,15 +11,22 @@ import { moduleName } from './route-4-angularjs.module';
     <div route-4-angularjs-root></div>
   `,
 })
-export class Route4Component implements AfterViewInit {
+export class Route4Component implements AfterViewInit, OnDestroy {
   title = 'Route 4';
+  private onDestroy$ = new Subject<void>();
 
   constructor(private elementRef: ElementRef, private upgradeUtils: UpgradeUtilsService) { }
 
   ngAfterViewInit() {
     const angularjsRoot = this.elementRef.nativeElement.querySelector('[route-4-angularjs-root]');
-    this.upgradeUtils.bootstrap(angularjsRoot, moduleName, {
+    const cleanUp = this.upgradeUtils.bootstrap(angularjsRoot, moduleName, {
       textUtils: TextUtilsService,
     });
+
+    this.onDestroy$.subscribe(cleanUp);
+  }
+
+  ngOnDestroy() {
+    this.onDestroy$.next();
   }
 }
