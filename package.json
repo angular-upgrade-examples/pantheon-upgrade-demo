@@ -7,7 +7,9 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "e2e-watch": "concurrently --kill-others \"npm start\" \"npm run e2e-watch-no-serve\"",
+    "e2e-watch-no-serve": "watch \"npm run e2e -- --dev-server-target=\" src e2e --wait=1"
   },
   "private": true,
   "dependencies": {
@@ -34,6 +36,7 @@
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "~8.9.4",
     "codelyzer": "~4.2.1",
+    "concurrently": "^3.5.1",
     "jasmine-core": "~2.99.1",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~1.7.1",
@@ -44,6 +47,7 @@
     "protractor": "~5.3.0",
     "ts-node": "~5.0.1",
     "tslint": "~5.9.1",
-    "typescript": "~2.7.2"
+    "typescript": "~2.7.2",
+    "watch": "^1.0.2"
   }
 }
