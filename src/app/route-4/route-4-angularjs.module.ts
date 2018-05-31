@@ -1,6 +1,7 @@
 import * as angular from 'angular';
 import { LoggerService } from '../shared/logger.service';
 import { TextUtilsService } from '../shared/text-utils.service';
+import { StateService } from '../shared-angularjs/state.service';
 
 export interface Item {
   id: string;
@@ -11,14 +12,16 @@ const route4RootDirective: angular.IDirectiveFactory = () => ({
   restrict: 'A',
   template: `
     <h3>{{ $ctrl.subtitle }}</h3>
+    <p>Total visits to AngularJS routes: {{ $ctrl.visits }}</p>
     <route-4-data-list></route-4-data-list>
   `,
   controllerAs: '$ctrl',
   controller: class Route4RootController {
-    static $inject = ['textUtils'];
+    static $inject = ['state', 'textUtils'];
     subtitle = this.textUtils.toLowerCase('Powered by AngularJS');
+    visits = ++this.state.visits;
 
-    constructor(private textUtils: TextUtilsService) { }
+    constructor(private state: StateService, private textUtils: TextUtilsService) { }
   },
 });
 

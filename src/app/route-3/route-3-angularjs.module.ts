@@ -1,19 +1,22 @@
 import * as angular from 'angular';
 import { LoggerService } from '../shared/logger.service';
 import { TextUtilsService } from '../shared/text-utils.service';
+import { StateService } from '../shared-angularjs/state.service';
 
 const route3RootDirective: angular.IDirectiveFactory = () => ({
   restrict: 'A',
   template: `
     <h3>{{ $ctrl.subtitle }}</h3>
+    <p>Total visits to AngularJS routes: {{ $ctrl.visits }}</p>
     <route-3-log-viewer></route-3-log-viewer>
   `,
   controllerAs: '$ctrl',
   controller: class Route3RootController {
-    static $inject = ['textUtils'];
+    static $inject = ['state', 'textUtils'];
     subtitle = this.textUtils.toUpperCase('Powered by AngularJS');
+    visits = ++this.state.visits;
 
-    constructor(private textUtils: TextUtilsService) { }
+    constructor(private state: StateService, private textUtils: TextUtilsService) { }
   },
 });
 
